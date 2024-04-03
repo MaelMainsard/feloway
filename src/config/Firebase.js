@@ -4,7 +4,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/
 
 const firebaseConfig = {
   apiKey: "AIzaSyACzy5axRJO9MT_0PAOj_s4jS48LwYzZsU",
-  authDomain: "felloway-30160.firebaseapp.com",
+  authDomain: "felloway.app",
   projectId: "felloway-30160",
   storageBucket: "felloway-30160.appspot.com",
   messagingSenderId: "1001735400507",

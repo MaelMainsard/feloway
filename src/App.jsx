@@ -30,7 +30,8 @@ function App() {
           "light": "rgba(248, 189, 102, 1)",
           "main": "rgba(247, 173, 65, 1)",
           "dark": "rgba(197, 138, 52, 1)",
-          "contrastText": "rgba(255, 255, 255, 1)"
+          "contrastText": "rgba(255, 255, 255, 1)",
+          "lightBlue": "#1998A5"
         },
         "error": {
           "light": "#e57373",
@@ -60,56 +61,12 @@ function App() {
         }
       },
       components: {
-        MuiInputBase: {
-          styleOverrides: {
-            root: {
-              color: '#fff',
-              borderWidth: 0,
-              border: '0px solid',
-              fontFamily: 'bree',
-            },
-            input: {
-              color: '#fff',
-              border: '0px solid',
-              fontFamily: 'bree',
-              margin: '0px',
-              padding: '0px',
-            },
-            outlined: {
-              color: '#fff',
-              border: '0px solid',
-              fontFamily: 'bree',
-            }
-          }
-        },MuiFormControl: {
-          styleOverrides: {
-            root: {
-              color: '#fff',
-              borderWidth: 0,
-              border: '0px solid',
-              fontFamily: 'bree',
-            }
-          }
-        },
         MuiSvgIcon: {
           styleOverrides: {
             root: {
               color: '#fff',
               borderWidth: 0,
               border: '0px solid',
-            }
-          }
-        },
-        MuiStack: {
-          styleOverrides: {
-            root: {
-              color: '#fff',
-              borderWidth: 0,
-              border: '0px solid',
-              margin: '0px',
-              padding: '0px',
-              paddingTop: '0px',
-              marginBottom: '5px',
             }
           }
         },

@@ -193,7 +193,7 @@ const ProfilHeader = () => {
 
   return (
     <>
-      <div className={'rounded-b-2xl shadow-md p-1'} style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: theme.palette.secondary.main, color: theme.palette.text.primary }}>
+      <div className={'rounded-b-2xl shadow-md p-1 w-full'} style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: theme.palette.secondary.main, color: theme.palette.text.primary }}>
         {!editMode && (
           <>
             <div className='p-3' style={{ display: 'flex', alignItems: 'center' }}>
