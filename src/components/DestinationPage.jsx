@@ -10,6 +10,7 @@ import Adventure from "../assets/Adventure.svg";
 import Explorer from "../assets/Explorer.svg";
 import Tourist from "../assets/Tourist.svg";
 import { getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
+import dayjs from 'dayjs';
 
 export const DestinationPage = () => {
     const theme = useTheme();
@@ -264,6 +265,8 @@ export const DestinationPage = () => {
 
     const [continent, setContinent] = useState(Object.keys(countryArray)[0]);
     const [country, setCountry] = useState(countryArray[continent][0]);
+    const [beginDate, setBeginDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const [sex, setSex] = useState(sexArray[0]);
     const [age, setAge] = useState(ageArray[0]);
     const [adept, setAdept] = useState(adeptArray[0]);
@@ -280,9 +283,11 @@ export const DestinationPage = () => {
                     const userData = userDocSnapshot.data(); 
                     if (userData.destinationContinent) setContinent(userData.destinationContinent);
                     if (userData.destinationCountry) setCountry(userData.destinationCountry);
-                    if (userData.destinationSex) setSex(userData.destinationSex);
-                    if (userData.destinationAge) setAge(userData.destinationAge);
-                    if (userData.destinationAdept) setAdept(userData.destinationAdept);
+                    if (userData.destinationBeginDate) setBeginDate(userData.destinationBeginDate);
+                    if (userData.destinationEndDate) setEndDate(userData.destinationEndDate);
+                    if (userData.destinationBuddySex) setSex(userData.destinationBuddySex);
+                    if (userData.destinationBuddyAge) setAge(userData.destinationBuddyAge);
+                    if (userData.destinationBuddyAdept) setAdept(userData.destinationBuddyAdept);
                     if (userData.destinationOrganisation) setSelectedOrganisation(userData.destinationOrganisation);
                     if (userData.destinationMindSet) setSelectedMindSet(userData.destinationMindSet);
                     if (userData.destinationBudget) setBudget(userData.destinationBudget);
@@ -320,12 +325,14 @@ export const DestinationPage = () => {
     };
 
     const handleBeginDateChange = (event) => {
+        setBeginDate(event.target.value);
         updateDoc(doc(firestore, "users", user_id), {
             destinationBeginDate: event.target.value,
         });
     };
     
     const handleEndDateChange = (event) => {
+        setEndDate(event.target.value);
         updateDoc(doc(firestore, "users", user_id), {
             destinationEndDate: event.target.value,
         });
@@ -345,12 +352,12 @@ export const DestinationPage = () => {
         });
     };
 
-    const handleBudgetChange = (event) => {
-        setBudget(event.target.value)
+    const handleBudgetChange = (event, newValue) => {
+        setBudget(newValue);
         updateDoc(doc(firestore, "users", user_id), {
-            destinationBudget: event.target.value,
+            destinationBudget: newValue,
         });
-    }
+    };
 
     const handleSexChange = (event) => {
         setSex(event.target.value)
@@ -419,13 +426,13 @@ export const DestinationPage = () => {
                     <div className='flex items-center space-x-2 mt-4'>
                         <span>Du</span>
                         <div style={{ backgroundColor: theme.palette.InputText }}>
-                            <input type='date' onChange={handleBeginDateChange} className=' shadow-md px-6 py-2 rounded-full' style={{ color: theme.palette.text.dropdown }} />
+                            <input type='date' onChange={handleBeginDateChange} value={beginDate} className=' shadow-md px-6 py-2 rounded-full' style={{ color: theme.palette.text.dropdown }} />
                         </div>
                     </div>
                     <div className='flex items-center space-x-2'>
                         <span>au</span>
                         <div style={{ backgroundColor: theme.palette.InputText }}>
-                            <input type='date' onChange={handleEndDateChange} className=' shadow-md px-6 py-2 rounded-full' style={{ color: theme.palette.text.dropdown }} />
+                            <input type='date' onChange={handleEndDateChange} value={endDate} className=' shadow-md px-6 py-2 rounded-full' style={{ color: theme.palette.text.dropdown }} />
                         </div>
                     </div>
                 </div>
@@ -444,7 +451,7 @@ export const DestinationPage = () => {
             <div className='flex flex-col gap-8'>
 
                 <div className='flex flex-row gap-8 w-full h-full item-center justify-center align-middle border-2 rounded-xl shadow-md p-4' style={{backgroundColor: theme.palette.InputText, borderColor: theme.palette.primary.main}}>
-                    <img src={Adventure} class="object-cover row-span-3 rounded-2xl"/>
+                    <img src={Adventure} className="object-cover row-span-3 rounded-2xl"/>
                     <div className='flex flex-col space-y-2 mt-3 justify-between'>
                         <span className='text-md font-bold'>Aventurier</span>
                         <p className='col-span-2'>Pour ceux qui recherchent des expériences audacieuses et des défis inédits, qui aiment se challenger et découvrir de nouveaux lieux.</p>
@@ -455,7 +462,7 @@ export const DestinationPage = () => {
                 </div>
 
                 <div className='flex flex-row gap-8 w-full h-full item-center justify-center align-middle border-2 rounded-xl shadow-md p-4' style={{backgroundColor: theme.palette.InputText, borderColor: theme.palette.primary.main}}>
-                    <img src={Explorer} class="object-cover row-span-3 rounded-2xl"/>
+                    <img src={Explorer} className="object-cover row-span-3 rounded-2xl"/>
                     <div className='flex flex-col space-y-2 mt-3 justify-between'>
                         <span className='text-md font-bold'>Explorateur</span>
                         <p className='col-span-2'>Passionné par la diversité culturelle,  pour des voyages axés sur la découverte de traditions locales, d'histoire fascinante et de la richesse culturelle du monde.</p>
@@ -468,7 +475,7 @@ export const DestinationPage = () => {
 
                 <div className='flex flex-row gap-8 w-full h-full item-center justify-center align-middle border-2 rounded-xl shadow-md p-4' style={{backgroundColor: theme.palette.InputText, borderColor: theme.palette.primary.main}}>
 
-                    <img src={Tourist} class="object-cover row-span-3 rounded-2xl"/>
+                    <img src={Tourist} className="object-cover row-span-3 rounded-2xl"/>
                     <div className='flex flex-col space-y-2 mt-3 justify-between'>
                         <span className='text-md font-bold'>Vacancier</span>
                         <p className='col-span-2'>Pour une escapade tranquille et apaisante, où le “Far Niente” est le slogan du séjour !.</p>
@@ -484,7 +491,7 @@ export const DestinationPage = () => {
             
             <div className='flex w-full justify-between px-6'>
                 <div className='w-4 h-4 rounded-full mt-3.5' style={{ backgroundColor: theme.palette.primary.main}}></div>
-                <Slider onChange={handleBudgetChange} min={0} max={1000} valueLabelDisplay="on" defaultValue={budget} track={false} sx={{'& .MuiSlider-thumb': {color:  theme.palette.chatBubble.left}}} />
+                <Slider onChange={handleBudgetChange} min={0} max={1000} valueLabelDisplay="on" value={budget} track={false} sx={{'& .MuiSlider-thumb': {color:  theme.palette.chatBubble.left}}} />
                 <div className='w-4 h-4 rounded-full mt-3.5' style={{ backgroundColor: theme.palette.primary.main}}></div>
             </div>
             <div className='flex w-full justify-between'>
