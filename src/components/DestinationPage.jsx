@@ -1,15 +1,15 @@
-import react, {useState} from 'react';
+import react, {useState, useEffect} from 'react';
 import { useTheme } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Slider from '@mui/material/Slider';
-import { doc,updateDoc } from "firebase/firestore";
 import { firestore } from '../config/Firebase';
 import { getLoggedUser } from "../config/util";
 import Adventure from "../assets/Adventure.svg";
 import Explorer from "../assets/Explorer.svg";
 import Tourist from "../assets/Tourist.svg";
+import { getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
 
 export const DestinationPage = () => {
     const theme = useTheme();
@@ -270,6 +270,33 @@ export const DestinationPage = () => {
     const [selectedOrganisation, setSelectedOrganisation] = useState(null);
     const [selectedMindSet, setSelectedMindSet] = useState(null);
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userDocRef = doc(firestore, "users", user_id);
+                const userDocSnapshot = await getDoc(userDocRef);
+                
+                if (userDocSnapshot.exists()) {
+                    const userData = userDocSnapshot.data(); 
+                    if (userData.destinationContinent) setContinent(userData.destinationContinent);
+                    if (userData.destinationCountry) setCountry(userData.destinationCountry);
+                    if (userData.destinationSex) setSex(userData.destinationSex);
+                    if (userData.destinationAge) setAge(userData.destinationAge);
+                    if (userData.destinationAdept) setAdept(userData.destinationAdept);
+                    if (userData.destinationOrganisation) setSelectedOrganisation(userData.destinationOrganisation);
+                    if (userData.destinationMindSet) setSelectedMindSet(userData.destinationMindSet);
+                    if (userData.destinationBudget) setBudget(userData.destinationBudget);
+                } else {
+                    console.log("Le document utilisateur n'existe pas.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des données utilisateur :", error);
+            }
+        }
+
+        fetchUserData();
+    }, [user_id]);
+
 
     const handleContinentChange = (event) => {
         const selectedContinent = event.target.value;
@@ -303,7 +330,7 @@ export const DestinationPage = () => {
             destinationEndDate: event.target.value,
         });
     };
-    
+
     const handleOrganisationClick = (index) => {
         setSelectedOrganisation(index);
         updateDoc(doc(firestore, "users", user_id), {
@@ -434,16 +461,19 @@ export const DestinationPage = () => {
                         <p className='col-span-2'>Passionné par la diversité culturelle,  pour des voyages axés sur la découverte de traditions locales, d'histoire fascinante et de la richesse culturelle du monde.</p>
                         <div onClick={() => handleMindSetClick(1)} className={`py-3 px-6 w-full text-center h-fit rounded-xl shadow-md ${selectedMindSet === 1 ? 'opacity-50' : ''}`} style={{backgroundColor: theme.palette.secondary.lightBlue, color: theme.palette.common.white}}>
                             <span className='text-center' style={{color: theme.palette.common.white}}>Sélectionner</span>
+
                         </div>
                     </div>
                 </div>
 
                 <div className='flex flex-row gap-8 w-full h-full item-center justify-center align-middle border-2 rounded-xl shadow-md p-4' style={{backgroundColor: theme.palette.InputText, borderColor: theme.palette.primary.main}}>
+
                     <img src={Tourist} class="object-cover row-span-3 rounded-2xl"/>
                     <div className='flex flex-col space-y-2 mt-3 justify-between'>
                         <span className='text-md font-bold'>Vacancier</span>
                         <p className='col-span-2'>Pour une escapade tranquille et apaisante, où le “Far Niente” est le slogan du séjour !.</p>
                         <div onClick={() => handleMindSetClick(2)} className={`py-3 px-6 w-full text-center h-fit rounded-xl shadow-md ${selectedMindSet === 2 ? 'opacity-50' : ''}`} style={{backgroundColor: theme.palette.secondary.lightBlue, color: theme.palette.common.white}}>
+
                             <span className='text-center' style={{color: theme.palette.common.white}}>Sélectionner</span>
                         </div>
                     </div>
